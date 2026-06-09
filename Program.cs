@@ -20,8 +20,34 @@ SHOP_ITEMS.Add("Desk Fan", 22.00);
 SHOP_ITEMS.Add("Screen Cleaner", 15.00);
 SHOP_ITEMS.Add("Power Board", 28.00);
 SHOP_ITEMS.Add("USB Adapter", 14.99);
+// Define budget variable
+int budget = 0;
+// Method that will get the users input and test if it has no errors
+static int GetUserInput()
+{
+    while (true)
+    {
+        // Get input and trim any spaces
+        string input = Console.ReadLine()?.Trim() ?? String.Empty;
+        // Tell user if string is empty and try again
+        if (input == String.Empty)
+        {
+            Console.WriteLine("Input can not be empty");
+        }
+        // Tell user if string is cannot be converted to an integer
+        else if (!int.TryParse(input, out int inputInt))
+        {
+            Console.WriteLine("Input must be a valid integer (whole number).");
+        }
+        // Return if it passes the tests    
+        else
+        {
+            return inputInt;
+        }
+    }
+}
 // Function to display the menu
-static void DisplayMenu()
+void DisplayMenu()
 {
     // Clear console then display a menu of difficulties and get user key input
     Console.WriteLine("Store");
@@ -48,7 +74,7 @@ static void DisplayMenu()
     }
     else if (selection.Key == ConsoleKey.D3)
     {
-
+        Console.WriteLine($"Your budget is ${budget}");
     }
     else if (selection.Key == ConsoleKey.D4)
     {
@@ -64,4 +90,7 @@ static void DisplayMenu()
         Console.Clear();
     }
 }
+// Get budget than display menu
+Console.WriteLine("What is your budget? (NZD)");
+budget = GetUserInput();
 DisplayMenu();
