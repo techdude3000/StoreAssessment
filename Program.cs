@@ -47,10 +47,13 @@ static double GetUserInput()
         }
     }
 }
+// Function to list all the items in the store
 static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
 {
+    // If there is a budget, show only items within that budget
     if (budget.HasValue)
     {
+        // Make a list containing all the items within the budget 
         List<string> itemsInBudget = new List<string>{};
         foreach (var i in storeItems)
         {
@@ -59,6 +62,7 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
                 itemsInBudget.Add($"{i.Key}: ${i.Value}");
             }
         }
+        // If there are items within budget, print all of them
         if (itemsInBudget.Count > 0)
         {
             foreach (string i in itemsInBudget)
@@ -66,11 +70,13 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
                 Console.WriteLine(i);
             }
         }
+        // If there are no items within budget, tell user
         else
         {
             Console.WriteLine($"There are no items in the store within your budget of ${budget}");
         }
     }
+    // If there isn't a budget, list all items in store
     else
     {
         Console.WriteLine("These are all the items in the store:");
