@@ -25,7 +25,8 @@ Dictionary<string, double> purchasedItems = new Dictionary<string, double>(Strin
 // Define budget variables
 double budget = 0;
 double initialBudget = 0;
-const double MIN_BUDGET = 1;
+// Minimum budget (cannot be below this number)
+const double MIN_BUDGET = 0;
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
 {
@@ -127,7 +128,8 @@ void PurchaseItem()
             // (I don't think there's a way to do this without looping though the dictionary)
             foreach (var i in storeItems)
             {
-                if (i.Key == userItem)
+                // If the key is the item the user entered, proceed
+                if (i.Key.Equals(userItem, StringComparison.OrdinalIgnoreCase))
                 {
                     // Check if user has enough budget to buy item
                     if (i.Value > budget)
