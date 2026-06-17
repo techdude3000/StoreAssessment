@@ -22,9 +22,10 @@ storeItems.Add("Screen Cleaner", 15.00);
 storeItems.Add("Power Board", 28.00);
 storeItems.Add("USB Adapter", 14.99);
 Dictionary<string, double> purchasedItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-// Define budget variable
+// Define budget variables
 double budget = 0;
 double initialBudget = 0;
+const double MIN_BUDGET = 1;
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
 {
@@ -240,6 +241,19 @@ void DisplayMenu()
 }
 // Get budget than display menu
 Console.WriteLine("What is your budget? (NZD)");
+// Loop until user enters a valid budget
+while (true)
+{
+    budget = GetUserInput();
+    if (budget > MIN_BUDGET)
+    {
+        break;
+    }
+    else
+    {
+        Console.WriteLine($"Budget must be at least ${MIN_BUDGET}. Try again:");
+    }
+}
 budget = GetUserInput();
 initialBudget = budget;
 DisplayMenu();
