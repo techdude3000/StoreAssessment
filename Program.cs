@@ -245,7 +245,7 @@ Console.WriteLine("What is your budget? (NZD)");
 while (true)
 {
     budget = GetUserInput();
-    if (budget > MIN_BUDGET)
+    if (budget >= MIN_BUDGET)
     {
         break;
     }
@@ -254,6 +254,5 @@ while (true)
         Console.WriteLine($"Budget must be at least ${MIN_BUDGET}. Try again:");
     }
 }
-budget = GetUserInput();
 initialBudget = budget;
 DisplayMenu();
