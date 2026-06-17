@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 // Create dictionary to hold all of the shop items
-Dictionary<string, double> STORE_ITEMS = new Dictionary<string, double>();
+Dictionary<string, double> STORE_ITEMS = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
 STORE_ITEMS.Add("Mouse", 25.00);
 STORE_ITEMS.Add("Keyboard", 35.75);
 STORE_ITEMS.Add("Headphones", 39.99);
@@ -47,7 +47,7 @@ static double GetUserInput()
         }
     }
 }
-// Function to list all the items in the store
+// Method to list all the items in the store
 static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
 {
     // If there is a budget, show only items within that budget
@@ -86,7 +86,29 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
         }
     }
 }
-// Function to display the menu
+// Method to purchase item
+void PurchaseItem()
+{
+    Console.WriteLine("What item would you like to purchase?:");
+    // Check if user input is in the 
+    while (true)
+    {
+        string userItem = Console.ReadLine()?.Trim() ?? String.Empty;
+        if (userItem == String.Empty)
+        {
+            Console.WriteLine("Item cannot be empty");
+        }
+        else if (STORE_ITEMS.ContainsKey(userItem))
+        {
+            Console.WriteLine($"Are you sure you would like to purchase ");
+        }
+        else
+        {
+            Console.WriteLine($"{userItem} is not in the store.");
+        }
+    }
+}
+// Method to display the menu
 void DisplayMenu()
 {
     // Clear console then display a menu of difficulties and get user key input
@@ -104,14 +126,17 @@ void DisplayMenu()
     if (selection.Key == ConsoleKey.D0)
     {
     }
+    // Show all items in store if user presses 1
     else if (selection.Key == ConsoleKey.D1)
     {
         ListStoreItems(STORE_ITEMS, null);
     }
+    // Show all items in store within users budget if user presses 2
     else if (selection.Key == ConsoleKey.D2)
     {
         ListStoreItems(STORE_ITEMS, budget);
     }
+    // Show users budget if user presses 3
     else if (selection.Key == ConsoleKey.D3)
     {
         Console.WriteLine($"Your budget is ${budget}");
@@ -122,7 +147,7 @@ void DisplayMenu()
     }
     else if (selection.Key == ConsoleKey.D5)
     {
-
+        
     }
     // Clear console if user types anything else to avoid spamming console
     else
