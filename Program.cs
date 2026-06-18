@@ -26,7 +26,7 @@ Dictionary<string, double> purchasedItems = new Dictionary<string, double>();
 double budget = 0;
 double initialBudget = 0;
 // Minimum budget (cannot be below this number)
-const double MIN_BUDGET = 0;
+const double MIN_BUDGET = 1;
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
 {
@@ -62,14 +62,18 @@ void GetBudget()
 {
     Console.Clear();
     Console.WriteLine($"Your current budget is ${budget}");
-    PressAnyKeyPrompt();
 }
 // Method to list all the items in the store
 static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
 {
     Console.Clear();
+    // If there is no items in store, tell user
+    if (storeItems.Count <= 0)
+    {
+        Console.WriteLine("There are no items in the store.");
+    }
     // If there is a budget, show only items within that budget
-    if (budget.HasValue)
+    else if (budget.HasValue)
     {
         // Make a list containing all the items within the budget 
         List<string> itemsInBudget = new List<string>{};
@@ -104,7 +108,6 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
             Console.WriteLine($"{i.Key}: ${i.Value}");
         }
     }
-    PressAnyKeyPrompt();
 }
 // Method to list all purchased items
 static void ListPurchasedItems(Dictionary<string, double> itemsList, double budget, double initialBudget)
@@ -113,12 +116,13 @@ static void ListPurchasedItems(Dictionary<string, double> itemsList, double budg
     // List all purchased items if user has bought any
     if (itemsList.Count > 0)
     {
-        Console.WriteLine("These are all of the items you purchased:");
+        Console.WriteLine("These are all of the items you purchased:\n");
         foreach (var i in itemsList)
         {
             Console.WriteLine($"You purchased {i.Key} for ${i.Value}");
         }
-        Console.WriteLine($"Your budget after purchasing is ${budget} (-{initialBudget - budget})");
+        Console.WriteLine($"\nYour budget after purchasing is ${budget}");
+        Console.WriteLine($"You spent ${initialBudget - budget} in total.");
     }
     // If user has not purchased anything, tell user
     else
@@ -145,8 +149,9 @@ void PurchaseItem()
         // If input is in the store, ask user if they are sure before letting them purchase
         else if (storeItems.ContainsKey(userItem))
         {
-            // Loop though dictionary to find the users item 
-            // (I don't think there's a way to do this without looping though the dictionary)
+            /* Loop though dictionary to find the users item AND retain the capitalisation from the dictionary, 
+            rather then use the userItem variable, which might have different capitalisation
+            (I don't think there's a way to do this without looping though the dictionary) */
             foreach (var i in storeItems)
             {
                 // If the key is the item the user entered, proceed
@@ -187,7 +192,6 @@ void PurchaseItem()
                                 Console.WriteLine("Please press Y for yes or N for no.");
                             }
                         }
-
                     }
                 }
             }
@@ -195,6 +199,7 @@ void PurchaseItem()
         // If user entered 0, exit
         else if (userItem.Equals("exit", StringComparison.OrdinalIgnoreCase))
         {
+            ListPurchasedItems(currentPurchasedItems, budget, initialBudget);
             break;
         }
         // If anything else is typed, tell user
@@ -230,20 +235,24 @@ void DisplayMenu()
         else if (selection.Key == ConsoleKey.D1)
         {
             ListStoreItems(storeItems, null);
+            PressAnyKeyPrompt();
         }
         // Show all items in store within users budget if user presses 2
         else if (selection.Key == ConsoleKey.D2)
         {
             ListStoreItems(storeItems, budget);
+            PressAnyKeyPrompt();
         }
         // Show users budget if user presses 3
         else if (selection.Key == ConsoleKey.D3)
         {
             GetBudget();
+            PressAnyKeyPrompt();
         }
         else if (selection.Key == ConsoleKey.D4)
         {
             PurchaseItem();
+            PressAnyKeyPrompt();
         }
         else if (selection.Key == ConsoleKey.D5)
         {
@@ -254,7 +263,7 @@ void DisplayMenu()
 
 }
 // Get budget than display menu
-Console.WriteLine("What is your budget? (NZD)");
+Console.WriteLine("What is your budget? (NZD):");
 // Loop until user enters a valid budget
 while (true)
 {
@@ -268,5 +277,6 @@ while (true)
         Console.WriteLine($"Budget must be at least ${MIN_BUDGET}. Try again:");
     }
 }
+// Set initial budget to the budget than display menu
 initialBudget = budget;
 DisplayMenu();
