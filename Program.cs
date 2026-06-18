@@ -21,7 +21,7 @@ storeItems.Add("Desk Fan", 22.00);
 storeItems.Add("Screen Cleaner", 15.00);
 storeItems.Add("Power Board", 28.00);
 storeItems.Add("USB Adapter", 14.99);
-Dictionary<string, double> purchasedItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+Dictionary<string, double> purchasedItems = new Dictionary<string, double>();
 // Define budget variables
 double budget = 0;
 double initialBudget = 0;
@@ -106,15 +106,36 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
     }
     PressAnyKeyPrompt();
 }
+// Method to list all purchased items
+static void ListPurchasedItems(Dictionary<string, double> itemsList, double budget, double initialBudget)
+{
+    Console.Clear();
+    // List all purchased items if user has bought any
+    if (itemsList.Count > 0)
+    {
+        Console.WriteLine("These are all of the items you purchased:");
+        foreach (var i in itemsList)
+        {
+            Console.WriteLine($"You purchased {i.Key} for ${i.Value}");
+        }
+        Console.WriteLine($"Your budget after purchasing is ${budget} (-{initialBudget - budget})");
+    }
+    // If user has not purchased anything, tell user
+    else
+    {
+        Console.WriteLine("You did not purchase anything.");
+    }
+}
 // Method to purchase item
 void PurchaseItem()
 {
+    Console.Clear();
     Dictionary<string, double> currentPurchasedItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
     // Loop until the user has picked an item or exited
     while (true)
     {
         // Get input, trim it and if it's null make it string.empty
-        Console.WriteLine("What item would you like to purchase? (0 to exit):");
+        Console.WriteLine("What item would you like to purchase? (type 'exit' to exit):");
         string userItem = Console.ReadLine()?.Trim() ?? String.Empty;
         // If input empty tell user
         if (userItem == String.Empty)
@@ -134,57 +155,47 @@ void PurchaseItem()
                     // Check if user has enough budget to buy item
                     if (i.Value > budget)
                     {
-                        Console.WriteLine($"You do not have enough budget (${budget}) to purchase {i.Key} (${i.Value})");
+                        Console.WriteLine($"You do not have enough budget (${budget}) to purchase {i.Key} (${i.Value}).");
                     }
                     // If user has enough budget, proceed
                     else
                     {
                         // Ask for user confirmation upon purchasing item
                         Console.WriteLine($"Are you sure you would like to purchase {i.Key} for ${i.Value}? (Y/N)");
-                        string input = Console.ReadLine()?.Trim() ?? String.Empty;
-                        input = input.ToLower();
-                        // If user says yes, remove purchased item from the store, negate money and add to the purchased items dictionaries
-                        if (input == "yes" || input == "y")
+                        while (true) 
                         {
-                            budget = (budget - i.Value);
-                            currentPurchasedItems.Add(i.Key, i.Value);
-                            purchasedItems.Add(i.Key, i.Value);
-                            Console.WriteLine($"Purchased {i.Key} for ${i.Value}");
-                            Console.WriteLine($"Your budget is now ${budget}");
-                            storeItems.Remove(i.Key);
+                            ConsoleKeyInfo selection = Console.ReadKey(true);
+                            // If user says y, remove purchased item from the store, negate money and add to the purchased items dictionaries
+                            if (selection.Key == ConsoleKey.Y)
+                            {
+                                budget = (budget - i.Value);
+                                currentPurchasedItems.Add(i.Key, i.Value);
+                                purchasedItems.Add(i.Key, i.Value);
+                                Console.WriteLine($"Purchased {i.Key} for ${i.Value}");
+                                Console.WriteLine($"Your budget is now ${budget}");
+                                storeItems.Remove(i.Key);
+                                break;
+                            }
+                            // If user says no, cancel purchase
+                            else if (selection.Key == ConsoleKey.N) 
+                            {
+                                Console.WriteLine("Purchase cancelled.");
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Please press Y for yes or N for no.");
+                            }
                         }
-                        // If user says no, cancel purchase
-                        else if (input == "no" || input == "n") 
-                        {
-                            Console.WriteLine("Purchase cancelled.");
-                        }
+
                     }
                 }
             }
         }
         // If user entered 0, exit
-        else if (userItem == "0")
+        else if (userItem.Equals("exit", StringComparison.OrdinalIgnoreCase))
         {
-            // List all purchased items if user has bought any
-            if (currentPurchasedItems.Count > 0)
-            {
-                Console.WriteLine("These are all of the items you purchased:");
-                foreach (var i in currentPurchasedItems)
-                {
-                    Console.WriteLine($"You purchased {i.Key} for ${i.Value}");
-                }
-                Console.WriteLine($"Your budget is now ${budget}");
-                PressAnyKeyPrompt();
-                break;
-            }
-            else
-            {
-                Console.WriteLine("You did not purchase anything.");
-                Console.WriteLine("\nPress any key to continue.");
-                Console.ReadKey(true);
-                Console.Clear();
-                break;
-            }
+            break;
         }
         // If anything else is typed, tell user
         else
@@ -236,7 +247,8 @@ void DisplayMenu()
         }
         else if (selection.Key == ConsoleKey.D5)
         {
-            
+            ListPurchasedItems(purchasedItems, budget, initialBudget);
+            PressAnyKeyPrompt();
         }
     }
 
