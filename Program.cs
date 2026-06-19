@@ -64,7 +64,7 @@ static double GetUserInput()
 static void GetBudget(double budget)
 {
     Console.Clear();
-    Console.WriteLine($"Your current budget is ${budget}");
+    Console.WriteLine($"Your current budget is ${budget:F2}");
 }
 // Method to list all the items in the store
 static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
@@ -84,13 +84,13 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
         {
             if (i.Value <= budget)
             {
-                itemsInBudget.Add($"{i.Key}: ${i.Value}");
+                itemsInBudget.Add($"{i.Key}: ${i.Value:F2}");
             }
         }
         // If there are items within budget, print all of them
         if (itemsInBudget.Count > 0)
         {
-            Console.WriteLine($"These are all the items in the store within your budget of ${budget}:");
+            Console.WriteLine($"These are all the items in the store within your budget of ${budget:F2}:");
             foreach (string i in itemsInBudget)
             {
                 Console.WriteLine(i);
@@ -99,7 +99,7 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
         // If there are no items within budget, tell user
         else
         {
-            Console.WriteLine($"There are no items in the store within your budget of ${budget}");
+            Console.WriteLine($"There are no items in the store within your budget of ${budget:F2}");
         }
     }
     // If there isn't a budget, list all items in store
@@ -108,7 +108,7 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
         Console.WriteLine("These are all the items in the store:");
         foreach (var i in storeItems)
         {
-            Console.WriteLine($"{i.Key}: ${i.Value}");
+            Console.WriteLine($"{i.Key}: ${i.Value:F2}");
         }
     }
 }
@@ -122,10 +122,10 @@ static void ListPurchasedItems(Dictionary<string, double> itemsList, double budg
         Console.WriteLine("These are all of the items you purchased:\n");
         foreach (var i in itemsList)
         {
-            Console.WriteLine($"You purchased {i.Key} for ${i.Value}");
+            Console.WriteLine($"You purchased {i.Key} for ${i.Value:F2}");
         }
-        Console.WriteLine($"\nYour budget after purchasing is ${budget}");
-        Console.WriteLine($"You spent ${initialBudget - budget} in total.");
+        Console.WriteLine($"\nYour budget after purchasing is ${budget:F2}");
+        Console.WriteLine($"You spent ${(initialBudget - budget):F2} in total.");
     }
     // If user has not purchased anything, tell user
     else
@@ -163,13 +163,13 @@ void PurchaseItem()
                     // Check if user has enough budget to buy item
                     if (i.Value > budget)
                     {
-                        Console.WriteLine($"You do not have enough budget (${budget}) to purchase {i.Key} (${i.Value}).");
+                        Console.WriteLine($"You do not have enough budget (${budget:F2}) to purchase {i.Key} (${i.Value:F2}).");
                     }
                     // If user has enough budget, proceed
                     else
                     {
                         // Ask for user confirmation upon purchasing item
-                        Console.WriteLine($"Are you sure you would like to purchase {i.Key} for ${i.Value}? (Y/N)");
+                        Console.WriteLine($"Are you sure you would like to purchase {i.Key} for ${i.Value:F2}? (Y/N)");
                         while (true) 
                         {
                             ConsoleKeyInfo selection = Console.ReadKey(true);
@@ -179,8 +179,8 @@ void PurchaseItem()
                                 budget = (budget - i.Value);
                                 currentPurchasedItems.Add(i.Key, i.Value);
                                 purchasedItems.Add(i.Key, i.Value);
-                                Console.WriteLine($"Purchased {i.Key} for ${i.Value}");
-                                Console.WriteLine($"Your budget is now ${budget}");
+                                Console.WriteLine($"Purchased {i.Key} for ${i.Value:F2}");
+                                Console.WriteLine($"Your budget is now ${budget:F2}");
                                 storeItems.Remove(i.Key);
                                 break;
                             }
@@ -279,7 +279,7 @@ while (true)
     }
     else
     {
-        Console.WriteLine($"Budget must be at least ${MIN_BUDGET}. Try again:");
+        Console.WriteLine($"Budget must be at least ${MIN_BUDGET:F2}. Try again:");
     }
 }
 // Set initial budget to the budget than display menu
