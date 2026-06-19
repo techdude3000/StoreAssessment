@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿/* Store Assessment — This program is designed to let a user to set a budget, 
+   print items from a store, purchase them, see what they have purchased and exit */
+
 // Create dictionary to hold all of the shop items
 Dictionary<string, double> storeItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
 storeItems.Add("Mouse", 25.00);
@@ -58,7 +60,8 @@ static double GetUserInput()
         }
     }
 }
-void GetBudget()
+// Method to show the budget to the user
+static void GetBudget(double budget)
 {
     Console.Clear();
     Console.WriteLine($"Your current budget is ${budget}");
@@ -246,14 +249,16 @@ void DisplayMenu()
         // Show users budget if user presses 3
         else if (selection.Key == ConsoleKey.D3)
         {
-            GetBudget();
+            GetBudget(budget);
             PressAnyKeyPrompt();
         }
+        // Let user purchase items if user presses 4
         else if (selection.Key == ConsoleKey.D4)
         {
             PurchaseItem();
             PressAnyKeyPrompt();
         }
+        // List all purchased items if user presses 5
         else if (selection.Key == ConsoleKey.D5)
         {
             ListPurchasedItems(purchasedItems, budget, initialBudget);
