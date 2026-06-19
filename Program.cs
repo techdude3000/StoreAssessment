@@ -23,12 +23,16 @@ storeItems.Add("Desk Fan", 22.00);
 storeItems.Add("Screen Cleaner", 15.00);
 storeItems.Add("Power Board", 28.00);
 storeItems.Add("USB Adapter", 14.99);
+
+// Define dictionary to hold the purchased items 
 Dictionary<string, double> purchasedItems = new Dictionary<string, double>();
+
 // Define budget variables
 double budget = 0;
 double initialBudget = 0;
 // Minimum budget (cannot be below this number)
 const double MIN_BUDGET = 1;
+
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
 {
@@ -36,6 +40,7 @@ static void PressAnyKeyPrompt()
     Console.ReadKey(true);
     Console.Clear();
 }
+
 // Method that will get the users input and test if it has no errors
 static double GetUserInput()
 {
@@ -60,12 +65,14 @@ static double GetUserInput()
         }
     }
 }
+
 // Method to show the budget to the user
 static void GetBudget(double budget)
 {
     Console.Clear();
     Console.WriteLine($"Your current budget is ${budget:F2}");
 }
+
 // Method to list all the items in the store
 static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
 {
@@ -112,6 +119,7 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
         }
     }
 }
+
 // Method to list all purchased items
 static void ListPurchasedItems(Dictionary<string, double> itemsList, double budget, double initialBudget)
 {
@@ -133,6 +141,7 @@ static void ListPurchasedItems(Dictionary<string, double> itemsList, double budg
         Console.WriteLine("You did not purchase anything.");
     }
 }
+
 // Method to purchase item
 void PurchaseItem()
 {
@@ -212,6 +221,7 @@ void PurchaseItem()
         }
     }
 }
+
 // Method to display the menu
 void DisplayMenu()
 {
@@ -267,6 +277,7 @@ void DisplayMenu()
     }
 
 }
+
 // Get budget than display menu
 Console.WriteLine("What is your budget? (NZD):");
 // Loop until user enters a valid budget
