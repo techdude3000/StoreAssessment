@@ -59,7 +59,7 @@ static decimal GetUserInput()
         // Tell user if string is cannot be converted to an decimal
         else if (!decimal.TryParse(input, out decimal inputDecimal))
         {
-            Console.WriteLine("Input must be a valid number (float).");
+            Console.WriteLine("Input must be a valid number (decimal).");
         }
         // Return if it passes the tests
         else
