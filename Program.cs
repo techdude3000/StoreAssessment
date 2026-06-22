@@ -1,37 +1,38 @@
 ﻿/* Store Assessment — This program is designed to let a user to set a budget, 
    print items from a store, purchase them, see what they have purchased and exit */
 
-// Create dictionary to hold all of the shop items
-Dictionary<string, double> storeItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-storeItems.Add("Mouse", 25.00);
-storeItems.Add("Keyboard", 35.75);
-storeItems.Add("Headphones", 39.99);
-storeItems.Add("Webcam", 60.00);
-storeItems.Add("Speakers", 45.30);
-storeItems.Add("USB Drive", 15.00);
-storeItems.Add("SSD Drive", 94.99);
-storeItems.Add("HDMI Cable", 12.30);
-storeItems.Add("Ethernet Cable", 10.00);
-storeItems.Add("Mouse Pad", 10.00);
-storeItems.Add("Laptop Sleeve", 25.00);
-storeItems.Add("Cooling Pad", 30.00);
-storeItems.Add("USB Hub", 20.00);
-storeItems.Add("Power Bank", 49.98);
-storeItems.Add("SD Card", 20.00);
-storeItems.Add("Card Reader", 18.50);
-storeItems.Add("Desk Fan", 22.00);
-storeItems.Add("Screen Cleaner", 15.00);
-storeItems.Add("Power Board", 28.00);
-storeItems.Add("USB Adapter", 14.99);
+// Create dictionary to hold all of the shop items 
+// Using decimals thoughout this program to ensure no errors due to floats
+Dictionary<string, decimal> storeItems = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+storeItems.Add("Mouse", 25.00m);
+storeItems.Add("Keyboard", 35.75m);
+storeItems.Add("Headphones", 39.99m); 
+storeItems.Add("Webcam", 60.00m);
+storeItems.Add("Speakers", 45.30m);
+storeItems.Add("USB Drive", 15.00m);
+storeItems.Add("SSD Drive", 94.99m);
+storeItems.Add("HDMI Cable", 12.30m);
+storeItems.Add("Ethernet Cable", 10.00m);
+storeItems.Add("Mouse Pad", 10.00m);
+storeItems.Add("Laptop Sleeve", 25.00m);
+storeItems.Add("Cooling Pad", 30.00m);
+storeItems.Add("USB Hub", 20.00m);
+storeItems.Add("Power Bank", 49.98m);
+storeItems.Add("SD Card", 20.00m);
+storeItems.Add("Card Reader", 18.50m);
+storeItems.Add("Desk Fan", 22.00m);
+storeItems.Add("Screen Cleaner", 15.00m);
+storeItems.Add("Power Board", 28.00m);
+storeItems.Add("USB Adapter", 14.99m);
 
 // Define dictionary to hold the purchased items 
-Dictionary<string, double> purchasedItems = new Dictionary<string, double>();
+Dictionary<string, decimal> purchasedItems = new Dictionary<string, decimal>();
 
 // Define budget variables
-double budget = 0;
-double initialBudget = 0;
+decimal budget = 0;
+decimal initialBudget = 0;
 // Minimum budget (cannot be below this number)
-const double MIN_BUDGET = 1;
+const decimal MIN_BUDGET = 1;
 
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
@@ -42,7 +43,7 @@ static void PressAnyKeyPrompt()
 }
 
 // Method that will get the users input and test if it has no errors
-static double GetUserInput()
+static decimal GetUserInput()
 {
     while (true)
     {
@@ -53,28 +54,28 @@ static double GetUserInput()
         {
             Console.WriteLine("Input can not be empty");
         }
-        // Tell user if string is cannot be converted to an double
-        else if (!double.TryParse(input, out double inputDouble))
+        // Tell user if string is cannot be converted to an decimal
+        else if (!decimal.TryParse(input, out decimal inputDecimal))
         {
             Console.WriteLine("Input must be a valid number (float).");
         }
         // Return if it passes the tests
         else
         {
-            return inputDouble;
+            return inputDecimal;
         }
     }
 }
 
 // Method to show the budget to the user
-static void GetBudget(double budget)
+static void GetBudget(decimal budget)
 {
     Console.Clear();
     Console.WriteLine($"Your current budget is ${budget:F2}");
 }
 
 // Method to list all the items in the store
-static void ListStoreItems(Dictionary<string, double> storeItems, double? budget)
+static void ListStoreItems(Dictionary<string, decimal> storeItems, decimal? budget)
 {
     Console.Clear();
     // If there is no items in store, tell user
@@ -121,7 +122,7 @@ static void ListStoreItems(Dictionary<string, double> storeItems, double? budget
 }
 
 // Method to list all purchased items
-static void ListPurchasedItems(Dictionary<string, double> itemsList, double budget, double initialBudget)
+static void ListPurchasedItems(Dictionary<string, decimal> itemsList, decimal budget, decimal initialBudget)
 {
     Console.Clear();
     // List all purchased items if user has bought any
@@ -146,7 +147,9 @@ static void ListPurchasedItems(Dictionary<string, double> itemsList, double budg
 void PurchaseItem()
 {
     Console.Clear();
-    Dictionary<string, double> currentPurchasedItems = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+    // Make temp variables to hold the current purchased items and the initial budget
+    Dictionary<string, decimal> currentPurchasedItems = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
+    decimal initialBudget = budget;
     // Loop until the user has picked an item or exited
     while (true)
     {
@@ -162,8 +165,7 @@ void PurchaseItem()
         else if (storeItems.ContainsKey(userItem))
         {
             /* Loop though dictionary to find the users item AND retain the capitalisation from the dictionary, 
-            rather then use the userItem variable, which might have different capitalisation
-            (I don't think there's a way to do this without looping though the dictionary) */
+            rather then use the userItem variable, which might have different capitalisation */
             foreach (var i in storeItems)
             {
                 // If the key is the item the user entered, proceed
@@ -278,7 +280,7 @@ void DisplayMenu()
 
 }
 
-// Get budget than display menu
+// Ask for users budget
 Console.WriteLine("What is your budget? (NZD):");
 // Loop until user enters a valid budget
 while (true)
