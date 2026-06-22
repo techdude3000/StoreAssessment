@@ -33,6 +33,8 @@ decimal budget = 0;
 decimal initialBudget = 0;
 // Minimum budget (cannot be below this number)
 const decimal MIN_BUDGET = 1;
+// Maximum budget (cannot be above this number)
+const decimal MAX_BUDGET = 1000;
 
 // Method that prompts the user to press any key to continue
 static void PressAnyKeyPrompt()
@@ -293,7 +295,11 @@ Console.WriteLine("What is your budget? (NZD):");
 while (true)
 {
     budget = GetUserInput();
-    if (budget >= MIN_BUDGET)
+    if (budget > MAX_BUDGET)
+    {
+        Console.WriteLine($"Budget has a maximum of ${MAX_BUDGET:F2}. Try again:");
+    }
+    else if (budget >= MIN_BUDGET)
     {
         break;
     }
