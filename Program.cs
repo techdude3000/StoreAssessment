@@ -143,6 +143,38 @@ static void ListPurchasedItems(Dictionary<string, decimal> itemsList, decimal bu
     }
 }
 
+// Method to confirm a purchase
+void PurchaseConfirmation(Dictionary<string, decimal> currentPurchasedItems, KeyValuePair<string, decimal> item)
+{
+    Console.WriteLine($"Are you sure you would like to purchase {item.Key} for ${item.Value:F2}? (Y/N)");
+    while (true) 
+    {
+        ConsoleKeyInfo selection = Console.ReadKey(true);
+        // If user says y, remove purchased item from the store, negate money and add to the purchased items dictionaries
+        if (selection.Key == ConsoleKey.Y)
+        {
+            budget = (budget - item.Value);
+            currentPurchasedItems.Add(item.Key, item.Value);
+            purchasedItems.Add(item.Key, item.Value);
+            Console.WriteLine($"Purchased {item.Key} for ${item.Value:F2}");
+            Console.WriteLine($"Your budget is now ${budget:F2}");
+            storeItems.Remove(item.Key);
+            break;
+        }
+        // If user says no, cancel purchase
+        else if (selection.Key == ConsoleKey.N) 
+        {
+            Console.WriteLine("Purchase cancelled.");
+            break;
+        }
+        // If the user types anything else
+        else
+        {
+            Console.WriteLine("Please press Y for yes or N for no.");
+        }
+    }
+}
+
 // Method to purchase item
 void PurchaseItem()
 {
@@ -166,46 +198,21 @@ void PurchaseItem()
         {
             /* Loop though dictionary to find the users item AND retain the capitalisation from the dictionary, 
             rather then use the userItem variable, which might have different capitalisation */
-            foreach (var i in storeItems)
+            foreach (var item in storeItems)
             {
                 // If the key is the item the user entered, proceed
-                if (i.Key.Equals(userItem, StringComparison.OrdinalIgnoreCase))
+                if (item.Key.Equals(userItem, StringComparison.OrdinalIgnoreCase))
                 {
                     // Check if user has enough budget to buy item
-                    if (i.Value > budget)
+                    if (item.Value > budget)
                     {
-                        Console.WriteLine($"You do not have enough budget (${budget:F2}) to purchase {i.Key} (${i.Value:F2}).");
+                        Console.WriteLine($"You do not have enough budget (${budget:F2}) to purchase {item.Key} (${item.Value:F2}).");
                     }
                     // If user has enough budget, proceed
                     else
                     {
                         // Ask for user confirmation upon purchasing item
-                        Console.WriteLine($"Are you sure you would like to purchase {i.Key} for ${i.Value:F2}? (Y/N)");
-                        while (true) 
-                        {
-                            ConsoleKeyInfo selection = Console.ReadKey(true);
-                            // If user says y, remove purchased item from the store, negate money and add to the purchased items dictionaries
-                            if (selection.Key == ConsoleKey.Y)
-                            {
-                                budget = (budget - i.Value);
-                                currentPurchasedItems.Add(i.Key, i.Value);
-                                purchasedItems.Add(i.Key, i.Value);
-                                Console.WriteLine($"Purchased {i.Key} for ${i.Value:F2}");
-                                Console.WriteLine($"Your budget is now ${budget:F2}");
-                                storeItems.Remove(i.Key);
-                                break;
-                            }
-                            // If user says no, cancel purchase
-                            else if (selection.Key == ConsoleKey.N) 
-                            {
-                                Console.WriteLine("Purchase cancelled.");
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Please press Y for yes or N for no.");
-                            }
-                        }
+                        PurchaseConfirmation(currentPurchasedItems, item);
                     }
                 }
             }
